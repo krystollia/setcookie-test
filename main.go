@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+	"time"
 )
 
 const (
@@ -36,6 +37,9 @@ func main() {
 			cookie := &http.Cookie{
 				Name:  cookieName,
 				Value: cookieValue,
+				Path:  "/",
+				//Expire after two years
+				Expires: time.Now().AddDate(2, 0, 0),
 			}
 			http.SetCookie(w, cookie)
 		}
