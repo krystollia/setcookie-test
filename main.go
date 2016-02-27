@@ -17,13 +17,19 @@ var (
 func main() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		c, err := r.Cookie(cookieName)
+		toGenerate := false
 		if err != nil {
-			panic(err)
-		}
-		s := c.Value
-		if s != "" {
-			log.Println("Got cookie:", s)
+			toGenerate = true
+			log.Println("Get cookie err:", err)
 		} else {
+			if s := c.Value; s == "" {
+				toGenerate = true
+			} else {
+				log.Println("Got cookie:", s)
+			}
+		}
+
+		if toGenerate {
 			cookieValue := strconv.Itoa(count)
 			count = count + 1
 			log.Println("No cookie, generate new:", cookieValue)
